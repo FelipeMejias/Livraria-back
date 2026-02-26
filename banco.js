@@ -1,4 +1,9 @@
-export const usuarios=[]
+export const usuarios=[
+    {
+        id:1,
+        username:'Pedro'
+    },
+]
 export const livros=[
     {
         id:1,
@@ -10,7 +15,7 @@ export const livros=[
         estoque:5
     },
     {
-        id:1,
+        id:2,
         titulo:'Investigação no Limite',
         tema:'Policial',
         autor:'Alberto Siqueira',
@@ -19,4 +24,17 @@ export const livros=[
         estoque:3
     },
 ]
-export const pedidos=[]
+export const pedidos=[
+    {
+        id:1,
+        idUsuario:1,
+        idLivro:1,
+        status:'Pago'
+    },
+    {
+        id:2,
+        idUsuario:1,
+        idLivro:2,
+        status:'Pago'
+    }
+]
