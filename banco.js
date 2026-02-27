@@ -1,10 +1,10 @@
-export const usuarios=[
+export let usuarios=[
     {
         id:1,
         username:'Pedro'
     },
 ]
-export const livros=[
+export let livros=[
     {
         id:1,
         titulo:'Histórias de Amor',
@@ -22,7 +22,7 @@ export const livros=[
         estoque:3
     },
 ]
-export const pedidos=[
+export let pedidos=[
     {
         id:1,
         idUsuario:1,
