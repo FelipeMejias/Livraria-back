@@ -4,10 +4,14 @@ import Express, {json} from 'express'
 import { usuariosRouter } from './src/routers/usuarioRouter.js';
 import { livrosRouter } from './src/routers/livrosRouter.js';
 import { pedidosRouter } from './src/routers/pedidosRouter.js';
+import { connectDB } from "./db.js";
+
 
 const app=Express()
 app.use(cors())
 app.use(json())
+
+await connectDB();
 
 app.use(usuariosRouter)
 app.use(livrosRouter)

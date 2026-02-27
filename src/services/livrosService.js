@@ -1,24 +1,20 @@
-import { livros } from "../../banco.js";
+import { db } from "../../db.js"
 
-export function diminuirEstoque(id){
-    const nova=[]
-    for(let livro of livros){
-        if (livro.id==id){
-            nova.push({...livro,estoque:livro.estoque-1})
-        }else{
-            nova.push(livro)
-        }
+export async function criarLivro(livro){
+    try {
+        await db.collection("livros").insertOne(livro)
+    } catch (error) {
+        console.log(error)
     }
-    livros=nova
+    
+}
+export async function buscarLivros(){
+    const livros =await db.collection('livros').find({}).toArray()
+    return livros
+}
+export function diminuirEstoque(id){
+    
 }
 export function aumentarEstoque(id){
-    const nova=[]
-    for(let livro of livros){
-        if (livro.id==id){
-            nova.push({...livro,estoque:livro.estoque+1})
-        }else{
-            nova.push(livro)
-        }
-    }
-    livros=nova
+    
 }

@@ -1,8 +1,10 @@
 import { livros } from "../../banco.js"
+import { buscarLivros, criarLivro } from "../services/livrosService.js"
 
 export async function getLivros(req,res){
     try {
-        res.status(200).send(livros)
+        const resposta=await buscarLivros()
+        res.status(200).send(resposta)
     } catch (error) {
         res.sendStatus(500)
     }
@@ -13,8 +15,7 @@ export async function postLivros(req,res){
         const estoque=parseInt(estoqueStr)
         const paginas=parseInt(paginasStr)
         const preco=parseFloat(precoStr)
-        const id=livros.length+1
-        livros.push({id,titulo,tema,paginas,preco,estoque})
+        await criarLivro({titulo,tema,paginas,preco,estoque})
         res.sendStatus(201)
     } catch (error) {
         res.sendStatus(500)
