@@ -1,7 +1,39 @@
+import dayjs from "dayjs"
 import { pedidos } from "../../banco.js"
-
-export function adicionarPedido(pedido){
-    pedidos.push(pedido)
+import { db } from "../../db.js";
+import { ObjectId } from "mongodb"
+export async function adicionarPedido({idUsuario,idLivro}){
+    const data=dayjs().format("YY/MM/DD HH:mm");
+    try {
+        await db.collection("pedidos").insertOne({
+            idUsuario: new ObjectId(idUsuario),
+            idLivro: new ObjectId(idLivro),
+            status:'Pago',
+            data
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+export async function buscarPedidos(){
+    try {
+        const pedidos = await db.collection('pedidos').aggregate([
+            {
+                $lookup: {
+                    from: "livros",localField: "idLivro",
+                    foreignField: "_id",as: "livro"
+                }
+            },{
+                $lookup: {
+                    from: "usuarios",localField: "idUsuario",
+                    foreignField: "_id",as: "usuario"
+                }
+            },
+            { $unwind: "$livro" },{ $unwind: "$usuario" }]).toArray()
+        return pedidos
+    } catch (error) {
+        console.log(error)
+    }
 }
 export function deletarPedido(id){
     const nova=[]

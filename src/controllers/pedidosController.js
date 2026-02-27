@@ -1,28 +1,21 @@
 import { pedidos } from "../../banco.js"
 import { getLivroById, getPedidoById, getUsuarioById } from "../../utils.js"
 import { aumentarEstoque, diminuirEstoque } from "../services/livrosService.js"
-import { adicionarPedido, trocarStatus } from "../services/pedidosService.js"
+import { adicionarPedido, buscarPedidos, trocarStatus } from "../services/pedidosService.js"
 
 export async function getPedidos(req,res){
     try {
-        const resposta= pedidos.map(pedido=>{
-            const usuario=getUsuarioById(pedido.idUsuario)
-            const livro=getLivroById(pedido.idLivro)
-            return {...pedido,usuario,livro}
-        })
-        res.status(200).send(resposta)
+        const pedidos=await buscarPedidos()
+        res.status(200).send(pedidos)
     } catch (error) {
         res.sendStatus(500)
     }
 }
 export async function postPedidos(req,res){
-    const {idUsuario:idUsuarioStr,idLivro:idLivroStr}=req.params
+    const {idUsuario,idLivro}=req.params
     try {
-        const idUsuario=parseInt(idUsuarioStr)
-        const idLivro=parseInt(idLivroStr)
-        const id=pedidos.length+1
-        diminuirEstoque(idLivro)
-        adicionarPedido({id,idUsuario,idLivro,status:'Pago'})
+        //diminuirEstoque(idLivro)
+        adicionarPedido({idUsuario,idLivro})
         res.sendStatus(201)
     } catch (error) {
         res.sendStatus(500)
