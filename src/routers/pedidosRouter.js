@@ -1,7 +1,9 @@
 import Router from 'express'
-import { getPedidos, postPedidos } from '../controllers/pedidosController.js'
+import { deletePedido, getPedidos, postPedidos, putPedido } from '../controllers/pedidosController.js'
 
 export const pedidosRouter=Router()
 
 pedidosRouter.get('/pedidos', getPedidos )
-pedidosRouter.get('/pedidos/:idUsuario/:idLivro', postPedidos )
+pedidosRouter.post('/pedidos/:idUsuario/:idLivro', postPedidos )
+pedidosRouter.put('/pedidos/:id', putPedido )
+pedidosRouter.delete('/pedidos/:id', deletePedido )

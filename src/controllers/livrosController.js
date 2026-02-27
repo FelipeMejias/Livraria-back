@@ -8,13 +8,13 @@ export async function getLivros(req,res){
     }
 }
 export async function postLivros(req,res){
-    const {titulo,tema,autor,paginas:paginasStr,preco:precoStr,estoqueStr}=req.body
+    const {titulo,tema,paginas:paginasStr,preco:precoStr,estoqueStr}=req.body
     try {
         const estoque=parseInt(estoqueStr)
         const paginas=parseInt(paginasStr)
         const preco=parseFloat(precoStr)
         const id=livros.length+1
-        livros.push({id,titulo,tema,autor,paginas,preco,estoque})
+        livros.push({id,titulo,tema,paginas,preco,estoque})
         res.sendStatus(201)
     } catch (error) {
         res.sendStatus(500)
