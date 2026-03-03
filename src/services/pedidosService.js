@@ -8,7 +8,7 @@ export async function adicionarPedido({idUsuario,idLivro}){
         await db.collection("pedidos").insertOne({
             idUsuario: new ObjectId(idUsuario),
             idLivro: new ObjectId(idLivro),
-            status:'Pago',
+            status:'Encomendado',
             data
         })
     } catch (error) {
@@ -35,27 +35,21 @@ export async function buscarPedidos(){
         console.log(error)
     }
 }
-export function deletarPedido(id){
-    const nova=[]
-    for(let pedido of pedidos){
-        if(pedido.id!=id)nova.push(pedido)
+export async function trocarStatus(id){
+    const pedido= await db.collection("pedidos").findOne({_id: new ObjectId(id) })
+    let novoStatus
+    if(pedido.status=='Encomendado'){
+        novoStatus='Em entrega'
+    }else if(pedido.status=='Em entrega'){
+        novoStatus='Finalizado'
     }
-    pedidos=nova
+    await db.collection("pedidos").updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { status: novoStatus } }
+    )
 }
-export function trocarStatus(id){
-    const nova=[]
-    for(let pedido of pedidos){
-        if (pedido.id==id){
-            let novoStatus
-            if(pedido.status=='Pago'){
-                novoStatus='Em entrega'
-            }else if(pedido.status=='Em entrega'){
-                novoStatus='Finalizado'
-            }
-            nova.push({...pedido,status:novoStatus})
-        }else{
-            nova.push(pedido)
-        }
-    }
-    pedidos=nova
+export async function deletarPedido(id){
+    await db.collection("pedidos").deleteOne({
+        _id: new ObjectId(id)
+    })
 }

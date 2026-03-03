@@ -9,7 +9,7 @@ export async function getLivros(req,res){
     }
 }
 export async function postLivros(req,res){
-    const {titulo,tema,paginas:paginasStr,preco:precoStr,estoqueStr}=req.body
+    const {titulo,tema,paginas:paginasStr,preco:precoStr,estoque:estoqueStr}=req.body
     try {
         const estoque=parseInt(estoqueStr)
         const paginas=parseInt(paginasStr)

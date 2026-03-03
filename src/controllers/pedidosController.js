@@ -1,7 +1,6 @@
 import { pedidos } from "../../banco.js"
-import { getLivroById, getPedidoById, getUsuarioById } from "../../utils.js"
 import { aumentarEstoque, diminuirEstoque } from "../services/livrosService.js"
-import { adicionarPedido, buscarPedidos, trocarStatus } from "../services/pedidosService.js"
+import { adicionarPedido, buscarPedidos, deletarPedido, trocarStatus } from "../services/pedidosService.js"
 
 export async function getPedidos(req,res){
     try {
@@ -22,22 +21,19 @@ export async function postPedidos(req,res){
     }
 }
 export async function putPedido(req,res){
-    const {id:idStr}=req.params
+    const {id}=req.params
     try {
-        const id=parseInt(idStr)
-        trocarStatus(id)
+        await trocarStatus(id)
         res.sendStatus(201)
     } catch (error) {
         res.sendStatus(500)
     }
 }
 export async function deletePedido(req,res){
-    const {id:idStr}=req.params
+    const {id}=req.params
     try {
-        console.log('cheguei')
-        const id=parseInt(idStr)
-        const {idLivro}=getPedidoById(id)
-        aumentarEstoque(idLivro)
+        await deletarPedido(id)
+        //aumentarEstoque(idLivro)
         res.sendStatus(201)
     } catch (error) {
         console.log(error)
