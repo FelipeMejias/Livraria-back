@@ -1,10 +1,19 @@
 import { pedidos } from "../../banco.js"
 import { aumentarEstoque, diminuirEstoque } from "../services/livrosService.js"
-import { adicionarPedido, buscarPedidos, deletarPedido, trocarStatus } from "../services/pedidosService.js"
+import { adicionarPedido, buscarPedidos, buscarTodosPedidos, deletarPedido, trocarStatus } from "../services/pedidosService.js"
 
 export async function getPedidos(req,res){
+    const {id}=req.params
     try {
-        const pedidos=await buscarPedidos()
+        const pedidos=await buscarPedidos(id)
+        res.status(200).send(pedidos)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+}
+export async function getTodosPedidos(req,res){
+    try {
+        const pedidos=await buscarTodosPedidos()
         res.status(200).send(pedidos)
     } catch (error) {
         res.sendStatus(500)

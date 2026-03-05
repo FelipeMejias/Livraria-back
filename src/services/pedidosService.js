@@ -15,10 +15,33 @@ export async function adicionarPedido({idUsuario,idLivro}){
         console.log(error)
     }
 }
-export async function buscarPedidos(){
+export async function buscarTodosPedidos(){
     try {
         const pedidos = await db.collection('pedidos').aggregate([
             {
+                $lookup: {
+                    from: "livros",localField: "idLivro",
+                    foreignField: "_id",as: "livro"
+                }
+            },{
+                $lookup: {
+                    from: "usuarios",localField: "idUsuario",
+                    foreignField: "_id",as: "usuario"
+                }
+            },
+            { $unwind: "$livro" },{ $unwind: "$usuario" }]).toArray()
+        return pedidos
+    } catch (error) {
+        console.log('erro daqui')
+        console.log(error)
+    }
+}
+export async function buscarPedidos(id){
+    try {
+        const pedidos = await db.collection('pedidos').aggregate([
+            {
+                $match: { idUsuario: new ObjectId(id) }
+            },{
                 $lookup: {
                     from: "livros",localField: "idLivro",
                     foreignField: "_id",as: "livro"

@@ -7,7 +7,7 @@ export async function adicionarLivro(livro){
         console.log(error)
     }
 }
-export async function buscarLivros(){
+export async function buscarLivros(id){
     try {
         const livros =await db.collection('livros').find({}).toArray()
         return livros
