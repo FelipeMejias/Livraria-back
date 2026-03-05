@@ -1,4 +1,4 @@
-import { buscarLivros, adicionarLivro } from "../services/livrosService.js"
+import { buscarLivros, adicionarLivro, deletarLivro } from "../services/livrosService.js"
 
 export async function getLivros(req,res){
     try {
@@ -9,14 +9,23 @@ export async function getLivros(req,res){
     }
 }
 export async function postLivros(req,res){
-    const {titulo,tema,paginas:paginasStr,preco:precoStr,estoque:estoqueStr}=req.body
+    const {titulo,tema,paginas:paginasStr,preco:precoStr}=req.body
     try {
-        const estoque=parseInt(estoqueStr)
         const paginas=parseInt(paginasStr)
         const preco=parseFloat(precoStr)
-        await adicionarLivro({titulo,tema,paginas,preco,estoque})
+        await adicionarLivro({titulo,tema,paginas,preco})
         res.sendStatus(201)
     } catch (error) {
+        res.sendStatus(500)
+    }
+}
+export async function deleteLivro(req,res){
+    const {id}=req.params
+    try {
+        await deletarLivro(id)
+        res.sendStatus(201)
+    } catch (error) {
+        console.log(error)
         res.sendStatus(500)
     }
 }

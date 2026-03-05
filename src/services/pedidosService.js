@@ -1,5 +1,4 @@
 import dayjs from "dayjs"
-import { pedidos } from "../../banco.js"
 import { db } from "../../db.js";
 import { ObjectId } from "mongodb"
 export async function adicionarPedido({idUsuario,idLivro}){

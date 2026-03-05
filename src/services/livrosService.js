@@ -1,5 +1,5 @@
 import { db } from "../../db.js"
-
+import { ObjectId } from "mongodb"
 export async function adicionarLivro(livro){
     try {
         await db.collection("livros").insertOne(livro)
@@ -15,9 +15,8 @@ export async function buscarLivros(id){
         console.log(error)
     }
 }
-export function diminuirEstoque(id){
-    
-}
-export function aumentarEstoque(id){
-    
+export async function deletarLivro(id){
+    await db.collection("livros").deleteOne({
+        _id: new ObjectId(id)
+    })
 }
