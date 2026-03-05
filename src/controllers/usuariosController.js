@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import { db } from '../../db.js'
 import dotenv from "dotenv";
-import { ObjectId } from 'mongodb';
 dotenv.config();
 const CODIGOADMIN=process.env.CODIGOADMIN
 export async function postLogin(req,res){
