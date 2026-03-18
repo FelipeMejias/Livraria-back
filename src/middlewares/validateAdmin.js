@@ -5,10 +5,10 @@ export async function validateAdmin(req,res,next){
     const adminCode = req.headers['admincode']
     try{
         if(adminCode!=CODIGOADMIN){
-            return res.sendStatus(400)
-        }else{
-            return next()
+            console.log('Essa rota necessita validação de administrador')
+            return res.status(400).send('Código de administrador incorreto')
         }
+        next()
     }catch{res.sendStatus(500)}
     
 }
