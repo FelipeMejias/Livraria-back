@@ -1,18 +1,17 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
-const uri = process.env.MONGO_URL; // pega a variável do Render
-const client = new MongoClient(uri);
+dotenv.config();
 
-async function connectDB() {
-  try {
-    await client.connect();
-    const db = client.db('ClusterBook'); // define o database que você quer usar
-    console.log('MongoDB conectado!');
-    return db;
-  } catch (err) {
-    console.error('Erro MongoDB:', err);
-    process.exit(1);
+const mongoClient = new MongoClient(process.env.MONGO_URL);
+
+export let db;
+
+export async function connectDB() {
+  if (!db) {
+    await mongoClient.connect();
+    db = mongoClient.db(process.env.BANCO);
+    console.log("Mongo conectado 🚀");
   }
+  return db;
 }
-
-connectDB();
