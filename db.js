@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const uri = process.env.MONGO_URL;
-const client = new MongoClient(uri); // driver moderno já cuida do TLS
+const client = new MongoClient(uri); 
 
 let _db;
 
@@ -18,6 +18,6 @@ export async function connectDB() {
     return _db;
   } catch (err) {
     console.error("Erro MongoDB:", err);
-    process.exit(1);
+    throw err; 
   }
 }
