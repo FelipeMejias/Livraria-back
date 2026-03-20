@@ -4,7 +4,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const uri = process.env.MONGO_URL;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+  serverSelectionTimeoutMS: 5000,
+});
 
 let _db;
 
