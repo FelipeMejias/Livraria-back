@@ -5,8 +5,8 @@ dotenv.config();
 
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, {
-  tls: true,
-  tlsAllowInvalidCertificates: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000,
 });
 
@@ -17,7 +17,7 @@ export async function connectDB() {
 
   try {
     await client.connect();
-    _db = client.db("ClusterBook"); 
+    _db = client.db("ClusterBook");
     console.log("MongoDB conectado!");
     return _db;
   } catch (err) {
