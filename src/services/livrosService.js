@@ -1,30 +1,28 @@
-import { connectDB } from "../../db.js"
-import { ObjectId } from "mongodb"
-export async function adicionarLivro(livro){
-    try {
-        const db = await connectDB();
-        await db.collection("livros").insertOne(livro)
-    } catch (error) {
-        console.log(error)
-    }
+import { supabase } from "../../db.js";
+
+export async function adicionarLivro(livro) {
+  try {
+    await supabase.from('livros').insert([livro]);
+  } catch (error) {
+    console.log(error);
+  }
 }
-export async function buscarLivros(){
-    try {
-        const db = await connectDB();
-        const livros =await db.collection('livros').find({}).toArray()
-        return livros
-    } catch (error) {
-        console.log(error)
-    }
+
+export async function buscarLivros() {
+  try {
+    const { data: livros, error } = await supabase.from('livros').select('*');
+    if (error) throw error;
+    return livros;
+  } catch (error) {
+    console.log(error);
+  }
 }
-export async function deletarLivro(id){
-    try {
-        const db = await connectDB();
-        await db.collection("livros").deleteOne({
-            _id: new ObjectId(id)
-        })
-    } catch (error) {
-        console.log(error)
-    }
-    
+
+export async function deletarLivro(id) {
+  try {
+    const { error } = await supabase.from('livros').delete().eq('id', id);
+    if (error) throw error;
+  } catch (error) {
+    console.log(error);
+  }
 }

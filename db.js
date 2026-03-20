@@ -1,23 +1,9 @@
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
+import { createClient } from '@supabase/supabase-js';
 
-const uri = process.env.MONGO_URL;
-const client = new MongoClient(uri); 
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-let _db;
-
-export async function connectDB() {
-  if (_db) return _db;
-
-  try {
-    await client.connect();
-    _db = client.db("ClusterBook");
-    console.log("MongoDB conectado!");
-    return _db;
-  } catch (err) {
-    console.error("Erro MongoDB:", err);
-    throw err; 
-  }
-}
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

@@ -9,10 +9,9 @@ export async function getLivros(req,res){
     }
 }
 export async function postLivros(req,res){
-    const {titulo,tema,paginas:paginasStr,preco:precoStr}=req.body
+    const {titulo,tema}=req.body
+    const {paginas,preco}=res.locals
     try {
-        const paginas=parseInt(paginasStr)
-        const preco=parseFloat(precoStr)
         await adicionarLivro({titulo,tema,paginas,preco})
         console.log('Livro criado!')
         res.sendStatus(201)
