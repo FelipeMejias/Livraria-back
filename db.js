@@ -4,16 +4,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const uri = process.env.MONGO_URL;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-});
+const client = new MongoClient(uri); // driver moderno já cuida do TLS
 
 let _db;
 
 export async function connectDB() {
-  if (_db) return _db; 
+  if (_db) return _db;
 
   try {
     await client.connect();
