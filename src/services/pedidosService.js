@@ -1,9 +1,10 @@
 import dayjs from "dayjs"
-import { db } from "../../db.js";
+import { connectDB } from "../../db.js";
 import { ObjectId } from "mongodb"
 export async function adicionarPedido({idUsuario,idLivro}){
     const data=dayjs().format("YY/MM/DD HH:mm");
     try {
+        const db = await connectDB();
         await db.collection("pedidos").insertOne({
             idUsuario: new ObjectId(idUsuario),
             idLivro: new ObjectId(idLivro),
@@ -16,6 +17,7 @@ export async function adicionarPedido({idUsuario,idLivro}){
 }
 export async function buscarTodosPedidos(){
     try {
+        const db = await connectDB();
         const pedidos = await db.collection('pedidos').aggregate([
             {
                 $lookup: {
@@ -37,6 +39,7 @@ export async function buscarTodosPedidos(){
 }
 export async function buscarPedidos(id){
     try {
+        const db = await connectDB();
         const pedidos = await db.collection('pedidos').aggregate([
             {
                 $match: { idUsuario: new ObjectId(id) }
@@ -58,20 +61,30 @@ export async function buscarPedidos(id){
     }
 }
 export async function trocarStatus(id){
-    const pedido= await db.collection("pedidos").findOne({_id: new ObjectId(id) })
-    let novoStatus
-    if(pedido.status=='Encomendado'){
-        novoStatus='Em entrega'
-    }else if(pedido.status=='Em entrega'){
-        novoStatus='Finalizado'
+    try {
+        const db = await connectDB();
+        const pedido= await db.collection("pedidos").findOne({_id: new ObjectId(id) })
+        let novoStatus
+        if(pedido.status=='Encomendado'){
+            novoStatus='Em entrega'
+        }else if(pedido.status=='Em entrega'){
+            novoStatus='Finalizado'
+        }
+        await db.collection("pedidos").updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { status: novoStatus } }
+        )
+    } catch (error) {
+        console.log(error)
     }
-    await db.collection("pedidos").updateOne(
-        { _id: new ObjectId(id) },
-        { $set: { status: novoStatus } }
-    )
 }
 export async function deletarPedido(id){
-    await db.collection("pedidos").deleteOne({
-        _id: new ObjectId(id)
-    })
+    try {
+        const db = await connectDB();
+        await db.collection("pedidos").deleteOne({
+            _id: new ObjectId(id)
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }

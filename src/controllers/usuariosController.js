@@ -1,12 +1,13 @@
 import bcrypt from 'bcrypt'
-import { db } from '../../db.js'
+import { connectDB } from '../../db.js'
 import dotenv from "dotenv";
 dotenv.config();
 const CODIGOADMIN=process.env.CODIGOADMIN
+
 export async function postLogin(req,res){
-    
     const {username,senha}=req.body
     try {
+        const db = await connectDB();
         const usuario = await db.collection("usuarios").findOne({username})
         if(!usuario){
             return res.status(422).send('Não existe usuário com esse username')
@@ -21,12 +22,14 @@ export async function postLogin(req,res){
         console.log('Usuário logado!')
         res.status(200).send(usuario)
     } catch (error) {
+        console.log(error)
         res.sendStatus(500)
     }
 }
 export async function postCadastro(req,res){
     const {username,senha,tipo,codigo}=req.body
     try {
+        const db = await connectDB();
         const usuarioExistente= await db.collection("usuarios").findOne({username:username})
         if(usuarioExistente){
             return res.status(422).send('Já existe um usuário com esse username')

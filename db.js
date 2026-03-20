@@ -3,15 +3,21 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const mongoClient = new MongoClient(process.env.MONGO_URL);
+const uri = process.env.MONGO_URL;
+const client = new MongoClient(uri);
 
-export let db;
+let _db;
 
 export async function connectDB() {
-  if (!db) {
-    await mongoClient.connect();
-    db = mongoClient.db(process.env.BANCO);
-    console.log("Mongo conectado 🚀");
+  if (_db) return _db; 
+
+  try {
+    await client.connect();
+    _db = client.db("ClusterBook"); 
+    console.log("MongoDB conectado!");
+    return _db;
+  } catch (err) {
+    console.error("Erro MongoDB:", err);
+    process.exit(1);
   }
-  return db;
 }
