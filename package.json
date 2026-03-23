@@ -1,23 +1,26 @@
 {
     "type": "module",
     "dependencies": {
+        "@faker-js/faker": "^10.3.0",
         "@supabase/supabase-js": "^2.99.3",
         "bcrypt": "^6.0.0",
         "cors": "^2.8.6",
         "dayjs": "^1.11.19",
         "dotenv": "^17.3.1",
         "express": "^5.2.1",
+        "jest": "^30.3.0",
         "mongodb": "^7.1.0",
-        "nodemon": "^3.1.14"
+        "nodemon": "^3.1.14",
+        "supertest": "^7.2.2"
     },
     "name": "livraria-back",
     "version": "1.0.0",
     "description": "API back-end para o projeto Livraria",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
-        "dev": "nodemon index.js"
+        "dev": "nodemon index.js",
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
     },
     "author": "",
     "license": "ISC"
