@@ -1,4 +1,4 @@
-import { adicionarPedido, buscarPedidos, buscarTodosPedidos, deletarPedido, trocarStatus } from "../services/pedidosService.js"
+import { adicionarPedido, buscarPedidos, buscarTodosPedidos, trocarStatus } from "../services/pedidosService.js"
 
 export async function getPedidos(req,res){
     const {id}=req.params
@@ -34,17 +34,6 @@ export async function putPedido(req,res){
         console.log('Pedido alterado!')
         res.sendStatus(201)
     } catch (error) {
-        res.sendStatus(500)
-    }
-}
-export async function deletePedido(req,res){
-    const {id}=req.params
-    try {
-        await deletarPedido(id)
-        console.log('Pedido deletado!')
-        res.sendStatus(201)
-    } catch (error) {
-        console.log(error)
         res.sendStatus(500)
     }
 }

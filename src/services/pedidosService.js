@@ -74,15 +74,3 @@ export async function trocarStatus(id) {
     console.log(error);
   }
 }
-
-export async function deletarPedido(id) {
-  try {
-    const { error } = await supabase
-      .from('pedidos')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
-  } catch (error) {
-    console.log(error);
-  }
-}
